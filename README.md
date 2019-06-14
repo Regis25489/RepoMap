@@ -9,8 +9,9 @@ Android|图片加载|[Glide](#glide)
 ### 功能模块
 #### [Glide](https://github.com/bumptech/glide) 
 ##### Glide是一个快速高效的Android图片加载库，注重于平滑的滚动。
-**文档:**<https://muyangmin.github.io/glide-docs-cn/>
-**配置:**
+**文档：**<https://muyangmin.github.io/glide-docs-cn/>
+
+**配置：**
 
 ```gradle
 repositories {
@@ -23,7 +24,7 @@ dependencies {
   annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 }
 ```
-**使用:**
+**使用：**
 
 ```java
 Glide.with(fragment)
