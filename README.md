@@ -3,7 +3,7 @@
 
 #### 功能模块
 
-##### [Glide][https://github.com/bumptech/glide]
+##### [Glide](https://github.com/bumptech/glide)
 
 >  Glide是一个快速高效的Android图片加载库，注重于平滑的滚动。
 >
@@ -16,4 +16,3 @@ Glide.with(fragment)
 ```
 
 #### 组件
-
