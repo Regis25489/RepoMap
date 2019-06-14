@@ -4,6 +4,8 @@
 平台|功能|名称||平台|功能|名称||平台|功能|名称
 :-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:
 Android|图片加载|[Glide](#glide)||Android|JSON处理|[Gson](#gson)||Android|View注入|[ButterKnife](#butterknife)
+Android|网络请求|[okhttp](#okhttp)||Android|网络请求|[Retrofit](#retrofit)||Android|响应式编程|[RxAndroid](#rxandroid) 
+Java|异步编程|[RxJava](#rxjava)||Android|页面框架|[Fragmentation](#fragmentation)||Android|权限管理|[RxPermissions](#rxpermissions)
 
 ## Android
 ### 功能模块
@@ -135,4 +137,183 @@ class ExampleActivity extends Activity {
   }
 }
 ```
-### 组件
+#### [OkHttp](https://github.com/square/okhttp) 
+##### An HTTP+HTTP/2 client for Android and Java applications. 
+**文档：**<http://square.github.io/okhttp/>
+
+**配置：**
+```gradle
+dependencies {
+  implementation 'com.squareup.okhttp3:okhttp:3.14.2'
+}
+```
+**使用：**
+```java
+//GET A URL
+OkHttpClient client = new OkHttpClient();
+
+String run(String url) throws IOException {
+  Request request = new Request.Builder()
+      .url(url)
+      .build();
+
+  try (Response response = client.newCall(request).execute()) {
+    return response.body().string();
+  }
+}
+//POST TO A SERVER
+public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
+
+OkHttpClient client = new OkHttpClient();
+
+String post(String url, String json) throws IOException {
+  RequestBody body = RequestBody.create(JSON, json);
+  Request request = new Request.Builder()
+      .url(url)
+      .post(body)
+      .build();
+  try (Response response = client.newCall(request).execute()) {
+    return response.body().string();
+  }
+}
+```
+#### [Retrofit](https://github.com/square/retrofit) 
+##### Type-safe HTTP client for Android and Java by Square, Inc. 
+**文档：**<https://square.github.io/retrofit/>
+
+**配置：**
+
+```gradle
+dependencies {
+  implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+}
+```
+**使用：**
+```java
+public interface GitHubService {
+  @GET("users/{user}/repos")
+  Call<List<Repo>> listRepos(@Path("user") String user);
+}
+
+Retrofit retrofit = new Retrofit.Builder()
+    .baseUrl("https://api.github.com/")
+    .build();
+
+GitHubService service = retrofit.create(GitHubService.class);
+
+Call<List<Repo>> repos = service.listRepos("octocat");
+```
+#### [RxAndroid](https://github.com/ReactiveX/RxAndroid) 
+##### RxJava bindings for Android
+**文档：**<https://github.com/ReactiveX/RxJava/wiki/Getting-Started>
+
+**配置：**
+```gradle
+dependencies {
+  implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+  implementation 'io.reactivex.rxjava2:rxjava:2.2.9'
+}
+```
+**使用：**
+```java
+Observable.just(getDrawableFromNet())
+        .subscribeOn(Schedulers.newThread())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<Drawable>() {
+            @Override
+            public void accept(Drawable drawable) throws Exception {
+                ((ImageView)findViewById(R.id.imageView)).setImageDrawable(drawable);
+            }
+        });
+```
+#### [RxJava](https://github.com/ReactiveX/RxJava) 
+##### RxJava – Reactive Extensions for the JVM – a library for composing asynchronous and event-based programs using observable sequences for the Java VM.
+**文档：**<https://github.com/ReactiveX/RxJava/wiki/Getting-Started>
+
+**配置：**
+```gradle
+dependencies {
+  implementation 'io.reactivex.rxjava2:rxjava:2.2.9'
+}
+```
+**使用：**
+
+```java
+import io.reactivex.functions.Consumer;
+
+Flowable.just("Hello world")
+  .subscribe(new Consumer<String>() {
+      @Override public void accept(String s) {
+          System.out.println(s);
+      }
+  });
+```
+#### [Fragmentation](https://github.com/YoKeyword/Fragmentation) 
+##### 为"单Activity ＋ 多Fragment","多模块Activity + 多Fragment"架构而生，简化开发，轻松解决动画、嵌套、事务相关等问题。
+**文档：**<https://www.jianshu.com/p/d9143a92ad94>
+
+**配置：**
+```gradle
+dependencies {
+  // appcompat-v7包是必须的
+  compile 'me.yokeyword:fragmentation:1.3.7'
+}
+```
+**使用：**
+
+```java
+public class MainActivity extends SupportActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(...);
+      	// Fragmentation is recommended to initialize in the Application
+        Fragmentation.builder()
+          	 // show stack view. Mode: BUBBLE, SHAKE, NONE
+             .stackViewMode(Fragmentation.BUBBLE)
+             .debug(BuildConfig.DEBUG)
+             ...
+             .install();
+
+        if (findFragment(HomeFragment.class) == null) {
+            loadRootFragment(R.id.fl_container, HomeFragment.newInstance());  //load root Fragment
+        }
+    }
+```
+#### [RxPermissions](https://github.com/tbruyelle/RxPermissions) 
+##### Android runtime permissions powered by RxJava2
+**文档：**<https://github.com/tbruyelle/RxPermissions/blob/master/README.md>
+
+**配置：**
+```gradle
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+dependencies {
+    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
+}
+```
+**使用：**
+
+```java
+final RxPermissions rxPermissions = new RxPermissions(this); 
+rxPermissions
+    .requestEachCombined(Manifest.permission.CAMERA,
+             Manifest.permission.READ_PHONE_STATE)
+    .subscribe(permission -> { // will emit 1 Permission object
+        if (permission.granted) {
+           // All permissions are granted !
+        } else if (permission.shouldShowRequestPermissionRationale)
+           // At least one denied permission without ask never again
+        } else {
+           // At least one denied permission with ask never again
+           // Need to go to the settings
+        }
+    });
+```
+### UI组件
