@@ -4,8 +4,10 @@
 平台|功能|名称||平台|功能|名称||平台|功能|名称
 :-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:
 Android|图片加载|[Glide](#glide)||Android|JSON处理|[Gson](#gson)||Android|View注入|[ButterKnife](#butterknife)
-Android|网络请求|[okhttp](#okhttp)||Android|网络请求|[Retrofit](#retrofit)||Android|响应式编程|[RxAndroid](#rxandroid) 
+Android|网络请求|[OkHttp](#okhttp)||Android|网络请求|[Retrofit](#retrofit)||Android|响应式编程|[RxAndroid](#rxandroid) 
 Java|异步编程|[RxJava](#rxjava)||Android|页面框架|[Fragmentation](#fragmentation)||Android|权限管理|[RxPermissions](#rxpermissions)
+Android|工具类|[AndroidUtilCode](#androidutilcode)||Android|adapter|[SlimAdapter](#slimadapter)||Android|路由框架|[ARouter](#arouter)
+Android|事件通信|[EventBus](#eventbus)||Android|Log|[Logger](#logger)||Android|内存管理|[LeakCanary](#leakcanary)
 
 ## Android
 ### 功能模块
@@ -316,4 +318,170 @@ rxPermissions
         }
     });
 ```
+#### [AndroidUtilCode](https://github.com/Blankj/AndroidUtilCode/tree/master/utilcode) 
+##### 一个强大易用的安卓工具类库
+**文档：**<https://github.com/Blankj/AndroidUtilCode/blob/master/utilcode/README-CN.md>
+
+**配置：**
+```gradle
+dependencies {
+   implementation 'com.blankj:utilcode:1.24.2'
+   // if u use AndroidX, use the following
+   implementation 'com.blankj:utilcodex:1.24.2'
+}
+```
+**使用：**
+略
+#### [SlimAdapter](https://github.com/MEiDIK/SlimAdapter) 
+##### A slim & clean & typeable Adapter without# VIEWHOLDER
+**文档：**<https://github.com/MEiDIK/SlimAdapter/blob/master/README.md>
+
+**配置：**
+```gradle
+dependencies {
+   compile 'net.idik:slimadapter:2.1.2'
+}
+```
+**使用：**
+```java
+SlimAdapter.create()
+                .register(R.layout.item_user, new SlimInjector<User>() {
+                    @Override
+                    protected void onInject(User data, IViewInjector injector) {
+                        ...// inject data into views，step 2
+                    }
+                })
+                .register(R.layout.item_interger, new SlimInjector<Integer>() {
+                    @Override
+                    protected void onInject(Integer data, IViewInjector injector) {
+                        ...// inject data into views，step 2
+                    }
+                })
+                .register(R.layout.item_string, new SlimInjector<String>() {
+                    @Override
+                    protected void onInject(String data, IViewInjector injector) {
+                        ...// inject data into views，step 2
+                    }
+                })
+                .registerDefault(R.layout.item_string, new SlimInjector() {
+                    @Override
+                    protected void onInject(Object data, IViewInjector injector) {
+                        ...// inject data into views，step 2
+                    }
+                })
+                .attachTo(recyclerView);
+    }
+```
+#### [ARouter](https://github.com/alibaba/ARouter) 
+##### 一个用于帮助 Android App 进行组件化改造的框架 —— 支持模块间的路由、通信、解耦
+**文档：**<https://github.com/alibaba/ARouter/blob/master/README_CN.md>
+
+**配置：**
+```gradle
+android {
+    defaultConfig {
+        ...
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [AROUTER_MODULE_NAME: project.getName()]
+            }
+        }
+    }
+}
+
+dependencies {
+    // 替换成最新版本, 需要注意的是api
+    // 要与compiler匹配使用，均使用最新版可以保证兼容
+    compile 'com.alibaba:arouter-api:x.x.x'
+    annotationProcessor 'com.alibaba:arouter-compiler:x.x.x'
+    ...
+}
+```
+**使用：**
+```java
+// 在支持路由的页面上添加注解(必选)
+// 这里的路径需要注意的是至少需要有两级，/xx/xx
+@Route(path = "/test/activity")
+public class YourActivity extend Activity {
+    ...
+}
+//初始化SDK
+if (isDebug()) {           // 这两行必须写在init之前，否则这些配置在init过程中将无效
+    ARouter.openLog();     // 打印日志
+    ARouter.openDebug();   // 开启调试模式(如果在InstantRun模式下运行，必须开启调试模式！线上版本需要关闭,否则有安全风险)
+}
+ARouter.init(mApplication); // 尽可能早，推荐在Application中初始化
+// 1. 应用内简单的跳转(通过URL跳转在'进阶用法'中)
+ARouter.getInstance().build("/test/activity").navigation();
+
+// 2. 跳转并携带参数
+ARouter.getInstance().build("/test/1")
+            .withLong("key1", 666L)
+            .withString("key3", "888")
+            .withObject("key4", new Test("Jack", "Rose"))
+            .navigation();
+```
+#### [EventBus](https://github.com/greenrobot/EventBus) 
+##### Event bus for Android and Java that simplifies communication between Activities, Fragments, Threads, Services, etc. Less code, better quality.
+**文档：**<http://greenrobot.org/eventbus/>
+
+**配置：**
+```gradle
+dependencies {
+   implementation 'org.greenrobot:eventbus:3.1.1'
+}
+```
+**使用：**
+```java
+//Define events:
+public static class MessageEvent { /* Additional fields if needed */ }
+//Prepare subscribers: Declare and annotate your subscribing method, optionally specify a thread mode:
+@Subscribe(threadMode = ThreadMode.MAIN)  
+public void onMessageEvent(MessageEvent event) {/* Do something */};
+//Register and unregister your subscriber. For example on Android, activities and fragments should usually register according to their life cycle:
+ @Override
+ public void onStart() {
+     super.onStart();
+     EventBus.getDefault().register(this);
+ }
+
+ @Override
+ public void onStop() {
+     super.onStop();
+     EventBus.getDefault().unregister(this);
+ }
+ //Post events:
+EventBus.getDefault().post(new MessageEvent());
+```
+#### [Logger](https://github.com/orhanobut/logger) 
+##### Simple, pretty and powerful logger for android
+**文档：**<https://github.com/orhanobut/logger/blob/master/README.md>
+
+**配置：**
+```gradle
+dependencies {
+   implementation 'com.orhanobut:logger:2.2.0'
+}
+```
+**使用：**
+```java
+//Initialize
+Logger.addLogAdapter(new AndroidLogAdapter());
+//And use
+Logger.d("hello");
+```
+#### [LeakCanary](https://github.com/square/leakcanary) 
+##### A memory leak detection library for Android
+**文档：**<https://github.com/square/leakcanary/blob/master/README.md>
+
+**配置：**
+```gradle
+dependencies {
+   debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-alpha-2'
+}
+```
+**使用：**
+无
+
 ### UI组件
+
