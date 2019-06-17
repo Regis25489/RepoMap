@@ -1,12 +1,14 @@
-# 仓库资源整理
-平台|功能|名称||平台|功能|名称
-:-:|:-:|:-:|:-:|:-:|:-:|:-:
-Android|图片加载|[Glide](#glide)||Android|JSON处理|[Gson](#gson)
-Android|View注入|[ButterKnife](#butterknife)||Android|网络请求|[OkHttp](#okhttp)
-Android|网络请求|[Retrofit](#retrofit)||Android|响应式编程|[RxAndroid](#rxandroid) 
-Java|异步编程|[RxJava](#rxjava)||Android|页面框架|[Fragmentation](#fragmentation)
-Android|权限管理|[RxPermissions](#rxpermissions)||Android|工具类|[AndroidUtilCode](#androidutilcode)
-Android|adapter|[SlimAdapter](#slimadapter)||Android|路由框架|[ARouter](#arouter)
-Android|事件通信|[EventBus](#eventbus)||Android|Log|[Logger](#logger)
-Android|内存管理|[LeakCanary](#leakcanary)
+# 目录
+## Android
+功能|名称||功能|名称
+:-:|:-:|:-:|:-:|:-:
+图片加载|[Glide](/android/feature_module#glide)||JSON处理|[Gson](/android/feature_module#gson)
+View注入|[ButterKnife](/android/feature_module#butterknife)||网络请求|[OkHttp](/android/feature_module#okhttp)
+网络请求|[Retrofit](/android/feature_module#retrofit)||响应式编程|[RxAndroid](/android/feature_module#rxandroid) 
+异步编程|[RxJava](/android/feature_module#rxjava)||页面框架|[Fragmentation](/android/feature_module#fragmentation)
+权限管理|[RxPermissions](/android/feature_module#rxpermissions)||工具类|[AndroidUtilCode](/android/feature_module#androidutilcode)
+adapter|[SlimAdapter](/android/feature_module#slimadapter)||路由框架|[ARouter](/android/feature_module#arouter)
+事件通信|[EventBus](/android/feature_module#eventbus)||Log|[Logger](/android/feature_module#logger)
+内存管理|[LeakCanary](/android/feature_module#leakcanary)
+
 
