@@ -13,6 +13,8 @@
     <script src="https://cdn.jsdelivr.net/npm/docsify-themeable@0"></script>
     <!--代码高亮 暂时无效-->
     <link href="themes/prism.css" rel="stylesheet" />
+    <!--评论-->
+    <link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
 </head>
 <body>
 <!--代码高亮 暂时无效-->
@@ -44,5 +46,19 @@
 <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
 <!--搜索-->
 <script src="//unpkg.com/docsify/lib/plugins/search.js"></script>
+<!--评论-->
+<script src="//unpkg.com/docsify/lib/plugins/gitalk.min.js"></script>
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script>
+    const gitalk = new Gitalk({
+        clientID: 'd460fb9ee4843dc62298',
+        clientSecret: '4526f0ad1204cd4bd8eca6714f8bdb3fce538c5e',
+        repo: 'https://github.com/Regis25489/RepoMap',
+        owner: 'Regis25489',
+        admin: ['Regis25489'],
+        // facebook-like distraction free mode
+        distractionFreeMode: false
+    })
+</script>
 </body>
 </html>
